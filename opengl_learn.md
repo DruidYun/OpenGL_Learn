@@ -31,6 +31,8 @@ glfwWindowHint(target, Hint);
 
 顶点着色器中处理过后，就应该是标准化设备坐标了，x、y和z的值在-1.0到1.0的一小段空间（立方体）。落在范围外的坐标都会被裁剪。
 
+### VAO、VBO
+
 顶点输入
 
 在GPU上创建内存，储存的顶点数据
@@ -44,6 +46,77 @@ glfwWindowHint(target, Hint);
 
 使用缓冲区对象的优点是，可以一次将大量数据发送到显卡，不必一次发送一个数据。
 
+用着色器语言GLSL（OpenGL Shading Language）编写顶点着色器，然后进行编译。
 
+## 添加着色器
 
-用着色器语言GLSL（OpenGL Shading Language）编写顶点着色器
+![添加着色器](opengl_learn.assets/添加着色器.png)
+
+### 对着色器进行编译
+
+为了让OpenGL使用着色器，必须在运行时从源码中动态编译着色器。首先创建着色器对象。
+
+各个阶段的着色器需要通过着色器程序对象链接起来。着色器程序对象是多个着色器组成的最终链接版本。
+
+```c++
+const char *vertexShaderSource = "#version 330 core\n"
+								 "layout(location = 0) in vec3 aPos;\n"
+								 "void main()\n"
+								 "{\n"
+								 "gl_Position = vec4(aPos.x,aPos.y,aPos.z,1.0);\n"
+								 "}\0";
+```
+
+```c++
+const char *fragmentShaderSource = "#version 330 core\n"
+							 	   "out vec4 FragColor;\n"
+								   "void main()\n"
+								   "{\n"
+								   "FragColor = vec4(1.0f,0.5f,0.2f,1.0f);\n"
+								   "}\n\0";
+```
+
+将着色器链接到程序时，会将每个着色器的输出连接到下一个着色器的输入.如果输出和输入不匹配，会出现链接错误。
+
+```c++
+//创建和编译着色器程序
+	//顶点着色器
+	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertexShader);
+	//检查编译错误 
+	int success;
+	char infoLog[512];
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+		std::cout << "ERROR::Shader::VERTEX::COMPILATION_FAIED\n" << infoLog << std::endl;
+	}
+	//片段着色器
+	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragmentShader);
+	//检查编译错误
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		std::cout << "ERROR::Shader::FRAGMENT::COMPILATION_FAIED\n" << infoLog << std::endl;
+	}
+	//着色器程序
+	unsigned int shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+	//链接错误检查
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+```
+
