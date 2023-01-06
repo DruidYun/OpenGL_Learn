@@ -44,6 +44,6 @@ glfwWindowHint(target, Hint);
 
 使用缓冲区对象的优点是，可以一次将大量数据发送到显卡，不必一次发送一个数据。
 
-## 
+
 
 用着色器语言GLSL（OpenGL Shading Language）编写顶点着色器
