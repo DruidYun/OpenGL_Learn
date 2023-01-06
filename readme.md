@@ -1,3 +1,5 @@
+## OpenGL-GLFW-GLAD
+
 OpenGL自身是一个巨大的状态机
 OpenGl的状态通常被称为上下文
 
@@ -31,7 +33,7 @@ glfwWindowHint(target, Hint);
 
 顶点着色器中处理过后，就应该是标准化设备坐标了，x、y和z的值在-1.0到1.0的一小段空间（立方体）。落在范围外的坐标都会被裁剪。
 
-### VAO、VBO
+## VAO、VBO
 
 顶点输入
 
@@ -59,21 +61,23 @@ glfwWindowHint(target, Hint);
 各个阶段的着色器需要通过着色器程序对象链接起来。着色器程序对象是多个着色器组成的最终链接版本。
 
 ```c++
-const char *vertexShaderSource = "#version 330 core\n"
-								 "layout(location = 0) in vec3 aPos;\n"
-								 "void main()\n"
-								 "{\n"
-								 "gl_Position = vec4(aPos.x,aPos.y,aPos.z,1.0);\n"
-								 "}\0";
+const char *vertexShaderSource = 
+"#version 330 core\n"
+"layout(location = 0) in vec3 aPos;\n"
+"void main()\n"
+"{\n"
+"gl_Position = vec4(aPos.x,aPos.y,aPos.z,1.0);\n"
+"}\0";
 ```
 
 ```c++
-const char *fragmentShaderSource = "#version 330 core\n"
-							 	   "out vec4 FragColor;\n"
-								   "void main()\n"
-								   "{\n"
-								   "FragColor = vec4(1.0f,0.5f,0.2f,1.0f);\n"
-								   "}\n\0";
+const char *fragmentShaderSource = 
+"#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"FragColor = vec4(1.0f,0.5f,0.2f,1.0f);\n"
+"}\n\0";
 ```
 
 将着色器链接到程序时，会将每个着色器的输出连接到下一个着色器的输入.如果输出和输入不匹配，会出现链接错误。
@@ -120,3 +124,4 @@ const char *fragmentShaderSource = "#version 330 core\n"
 	glDeleteShader(fragmentShader);
 ```
 
+创建着色器程序
