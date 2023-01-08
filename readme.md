@@ -126,9 +126,83 @@ const char *fragmentShaderSource =
 
 创建着色器程序
 
-## 元素缓冲对象
+## 元素缓冲对象EBO
 
 EBO:Element Buffer Object
 
 绘制两个三角形来组成一个矩形，可以使用下面的顶点的集合
+
+```c++
+float vertices[] =
+{
+	//第一个三角形
+	0.5f,0.5f,0.0f,//右上
+	0.5f,-0.5f,0.0f,//右下
+	-0.5f,0.5f,0.0f,//左上
+	//第二个三角形
+	0.5f,-0.5f,0.0f,//右下
+	-0.5f,-0.5f,0.0f,//左下
+	-0.5f,0.5f,0.0f//左上
+};
+```
+
+通过下面修改顶点数进行绘制
+
+```c++
+glDrawArrays(GL_TRIANGLES, 0, 6);
+```
+
+可以获得以下图像
+
+<img src="readme.assets/image-20230108145335877.png" alt="image-20230108145335877" style="zoom: 50%;" />
+
+修改光栅化模式，改为GL_LINE后
+
+```
+glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+```
+
+<img src="readme.assets/image-20230108161225087.png" alt="image-20230108161225087" style="zoom: 67%;" />
+
+在这种情况下，有两个左上的点，两个右下的点，其中有两个点是多余的。
+
+换一种方式，用索引的方式，使用四个点的坐标
+
+```c++
+float vertices[] = {
+	0.5f,0.5f,0.0f,// 右上
+	0.5f,-0.5f,0.0f,// 右下
+	-0.5f,-0.5f,0.0f,// 左下
+	-0.5f,0.5f,0.0f// 左上
+};
+unsigned int indices[] = {
+	0,1,3,//第一个三角形
+	1,2,3//第二个三角形
+};
+```
+
+选择使用索引渲染的函数，这样就可以绘出和上图一样的图像
+
+```c++
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, indices); //选择索引的方式
+```
+
+PS:采用了EBO时，则需要用glDrawElements函数来代替glDrawArrays函数，来指明我们从索引缓冲渲染。
+
+参照[glDrawArrays 和 glDrawElements](https://www.cnblogs.com/keguniang/p/9866065.html)
+
+这样写还不是整个的流程，还需要配置EBO
+
+```c++
+unsigned int EBO;
+	glGenBuffers(1, &EBO);//创建缓冲区对象名字
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);//绑定EBO缓冲
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);//设置缓冲区数据
+```
+
+修改参数
+
+```c++
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0/*indices*/);
+```
 

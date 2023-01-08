@@ -1,4 +1,4 @@
 ﻿  glad.c
   main.cpp
 LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
-  sample_1_2HelloTriangle-2.vcxproj -> D:\MyProject\OpenGL\OpenGL_Learn\x64\Debug\sample_2_HelloTriangle-1.exe
+  sample_1_2HelloTriangle-2.vcxproj -> D:\MyProject\OpenGL\OpenGL_Learn\x64\Debug\sample_1_2HelloTriangle-2.exe
