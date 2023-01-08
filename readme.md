@@ -229,3 +229,8 @@ glfwSetFramebufferSizeCallback(window, frameBuffer_size_callback);
 PS：OpenGL中使用的坐标介于-1和1之间和屏幕空间坐标不同。例如：如果屏幕右下角为（800，600），（-0.5，0.5）将映射到屏幕空间的（200，450）
 
 ## 练习
+
+1. 通过添加更多的顶点数据，使用glDrawArrays绘制两个挨在一起的三角形
+2. 创建相同的两个三角形，但对它们的数据使用不同的VAO和VBO
+3. 创建两个着色器，其中一个使用片段做着色器输出黄色
+
