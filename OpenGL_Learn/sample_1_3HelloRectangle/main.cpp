@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ctime>
 void processInput(GLFWwindow* window);
+void frameBuffer_size_callback(GLFWwindow* window, int width, int height);
 float vertices[] = {
 	0.5f,0.5f,0.0f,// 右上
 	0.5f,-0.5f,0.0f,// 右下
@@ -38,12 +39,14 @@ int main()
 	GLFWwindow* window = glfwCreateWindow(800, 600, "YEYE ZAI XUE OpenGL", NULL, NULL);
 	if (window == NULL)
 	{
-		std::cout << "爷创建GLFW窗口失败了" << std::endl;
+		std::cout << "创建GLFW窗口失败了" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
 	//GLFW将窗口的上下文设置为当前线程的上下文
 	glfwMakeContextCurrent(window);
+	//注册回调函数
+	glfwSetFramebufferSizeCallback(window, frameBuffer_size_callback);
 	// GLAD
 	// glad:加载所有OpenGL函数指针
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -141,4 +144,8 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+}
+void frameBuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);// 设置视区
 }

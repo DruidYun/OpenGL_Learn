@@ -206,3 +206,26 @@ unsigned int EBO;
 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0/*indices*/);
 ```
 
+然后使用绑定，之后注销
+
+## 视口
+
+调整窗口的时候，也应该同时调整视口。在窗口上注册一个回调函数，每次调用窗口大小时都调用该函数
+
+```c++
+void frameBuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
+```
+
+注册回调函数
+
+```c++
+//注册回调函数
+glfwSetFramebufferSizeCallback(window, frameBuffer_size_callback);
+```
+
+PS：OpenGL中使用的坐标介于-1和1之间和屏幕空间坐标不同。例如：如果屏幕右下角为（800，600），（-0.5，0.5）将映射到屏幕空间的（200，450）
+
+## 练习
