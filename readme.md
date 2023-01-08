@@ -52,7 +52,7 @@ glfwWindowHint(target, Hint);
 
 ## 添加着色器
 
-![添加着色器](opengl_learn.assets/添加着色器.png)
+![添加着色器](readme.assets/添加着色器.png)
 
 ### 对着色器进行编译
 
@@ -125,3 +125,10 @@ const char *fragmentShaderSource =
 ```
 
 创建着色器程序
+
+## 元素缓冲对象
+
+EBO:Element Buffer Object
+
+绘制两个三角形来组成一个矩形，可以使用下面的顶点的集合
+
