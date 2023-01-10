@@ -234,3 +234,64 @@ PS：OpenGL中使用的坐标介于-1和1之间和屏幕空间坐标不同。例
 2. 创建相同的两个三角形，但对它们的数据使用不同的VAO和VBO
 3. 创建两个着色器，其中一个使用片段做着色器输出黄色
 
+## 着色器Shader
+
+着色器是基于GPU的小程序，这些小程序针对渲染管线中的每个特定步骤运行。从本质上说，着色器只不过是将输入转换为输出的程序。着色器也是非常孤立的程序，他们之间唯一的交流是通过输入和输出。
+
+GLSL：OpenGL SHading Language
+
+PS:Shader Language目前主要有3种语言：
+
+1. 基于 OpenGL 的 **OpenGL Shading Language**，简称 **GLSL**;
+2. 基于 DirectX 的 **High Level Shading Language**,简称 **HLSL**;
+3. 还有 NVIDIA 公司的 **C for Graphic**，简称 **Cg** 语言。
+
+这是GLSL程序的典型结构
+
+![image-20230109114631595](readme.assets/image-20230109114631595.png)
+
+### 类型
+
+GLSL中包含C等其它语言大部分的默认基础数据类型
+
+- int、float、double、uint和bool
+
+GLSL也有两种容器类型
+
+- 向量(Vector)
+  - vecn: the default vector of n floats
+  - bvecn: a vector of n booleans
+  - ivecn: a vector of n integers
+  - uvecn: a vector of n unsigned integers
+  - dvecn: a vector of n double components 
+- 矩阵(Matrix)
+
+> 向量的分量可以通过xyzw分别访问。GLSL还允许对颜色使用rgba，或对纹理坐标使用stpq。
+
+向量允许一些有趣而灵活的分量选择方式，叫做重组(Swizzling):
+
+```glsl
+vec2 vect = vec2(0.5,0.7);
+vec4 result = vec4(vect,0.0,0.0);
+vec4 otherResult = vect(result.xyz,1.0);
+```
+
+顶点着色器接受的是一种特殊形式的输入，否则就会效率低下
+
+从顶点数据中直接接受输出。为了顶点数据该如何管理，使用location这一元数据（metadata）指定输入变量，这样才可以在CPU端配置顶点属性。例如：`layout (location = 0)`。layout这个的标识，使得能把它链接到顶点数据。
+
+可以忽略`layout(location = 0)`标识符，通过在OpenGL代码中使用`glGenAttribLocation`查询属性位置值(Location)，通过`glBindAttribLocation`绑定属性位置值(Location)。但是推荐在着色器中设置它们，这样会更容易理解和节省工作量。
+
+输入输出：
+
+- 在发生方着色器中声明一个输出
+- 在接受方着色器中声明一个类似的输入
+- 当类型和名字都一致，OpenGL将把变量连接到一起（在链接程序对象时完成）
+
+Uniform: 另一种从CPU的应用，向GPU中的着色器发送数据的方式
+
+- uniform是全局的(Global)，可以被任意着色器程序在任意阶段访问
+
+  ![image-20230110175829032](readme.assets/image-20230110175829032.png)
+
+如果声明了一个uniform却没用过，编译器会默认移除这个变量，导致最后编译出的版本并不会包含它，这可能导致一些非常麻烦的错误，切记！
