@@ -1,0 +1,3 @@
+﻿  main.cpp
+D:\MyProject\OpenGL\OpenGL_Learn\sample_1_5Shader-2\main.cpp(120,38): warning C4305: “参数”: 从“double”到“GLfloat”截断
+  sample_1_5Shader-2.vcxproj -> D:\MyProject\OpenGL\OpenGL_Learn\x64\Debug\sample_1_5Shader-2.exe

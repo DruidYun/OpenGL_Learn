@@ -288,10 +288,90 @@ vec4 otherResult = vect(result.xyz,1.0);
 - 在接受方着色器中声明一个类似的输入
 - 当类型和名字都一致，OpenGL将把变量连接到一起（在链接程序对象时完成）
 
-Uniform: 另一种从CPU的应用，向GPU中的着色器发送数据的方式
+### Uniform:
+
+ 另一种从CPU的应用，向GPU中的着色器发送数据的方式
 
 - uniform是全局的(Global)，可以被任意着色器程序在任意阶段访问
 
   ![image-20230110175829032](readme.assets/image-20230110175829032.png)
 
 如果声明了一个uniform却没用过，编译器会默认移除这个变量，导致最后编译出的版本并不会包含它，这可能导致一些非常麻烦的错误，切记！
+
+不去给像素传递一个单一的颜色，而是让它随着时间改变颜色
+
+设置着色器，使用uniform
+
+```c++
+const char *vertexShaderSource = 
+	"#version 330 core\n"
+	"layout(location = 0) in vec3 aPos;\n"
+	"void main()\n"
+	"{\n"
+	"gl_Position = vec4(aPos,1.0);\n"
+	"}\0";
+const char *fragmentShaderSource = 
+	"#version 330 core\n"
+	"out vec4 FragColor;\n"
+	"uniform vec4 ourColor;\n"
+	"void main()\n"
+	"{\n"
+	"FragColor = ourColor;\n"
+	"}\n\0";
+```
+
+最后通过sin和cos实现颜色渐变
+
+```c++
+glUseProgram(shaderProgram);
+//设置uniform值
+float timeValue = glfwGetTime();
+float greenValue = sin(timeValue) / 2.0f + 0.5F;
+float redValue = cos(timeValue) / 2.0f + 0.5F;
+float blueValue = cos(timeValue+45) / 2.0f + 0.5F;
+int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+glUniform4f(vertexColorLocation, redValue, greenValue, blueValue, 1.0f);
+```
+
+给顶点不同的颜色：
+
+```c++
+float vertices[] =  // 位置 // 颜色
+{
+	-0.5f,-0.5f,0.0f,1.0f,0.0f,0.0f,//右下
+	0.5f,-0.5f,0.0f,0.0f,1.0f,0.0f,//左下
+	0.0f,0.5,0.0f,0.0f,0.0f,1.0f//上
+};
+const char *vertexShaderSource = 
+	"#version 330 core\n"
+	"layout(location = 0) in vec3 aPos;\n"
+	"layout(location = 1) in vec3 aColor;\n"
+	"out vec3 ourColor;\n"
+	"void main()\n"
+	"{\n"
+	"gl_Position = vec4(aPos,1.0);\n"
+	"ourColor = aColor;\n"
+	"}\0";
+const char *fragmentShaderSource = 
+	"#version 330 core\n"
+	"out vec4 FragColor;\n"
+	"uniform vec4 ourColor;\n"
+	"void main()\n"
+	"{\n"
+	"FragColor = ourColor;\n"
+	"}\n\0";
+```
+
+```c++
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	//告知Shader如何解析缓冲里的属性值
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	//开启VAI管理的第一个属性值
+	glEnableVertexAttribArray(0);
+	//告知Shader如何解析缓冲里的属性值
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*4));
+	//开启VAI管理的第一个属性值
+	glEnableVertexAttribArray(1);
+```
+
+![image-20230111122955026](readme.assets/image-20230111122955026.png)
