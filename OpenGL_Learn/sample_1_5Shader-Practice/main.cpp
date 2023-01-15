@@ -6,8 +6,8 @@
 void processInput(GLFWwindow* window);
 float vertices[] =  // 位置 // 颜色
 {
-	-0.4330125f,-0.25f,0.0f,1.0f,0.0f,0.0f,//右下
-	0.4330125f,-0.25f,0.0f,0.0f,1.0f,0.0f,//左下
+	-0.5,-0.5f,0.0f,1.0f,0.0f,0.0f,//右下
+	0.5,-0.5f,0.0f,0.0f,1.0f,0.0f,//左下
 	0.0f,0.5,0.0f,0.0f,0.0f,1.0f//上
 };
 int main()
@@ -67,8 +67,6 @@ int main()
 			//glfw:交换缓冲器和轮询IO事件（按键按下/释放、鼠标移动等)		
 			//glUniform4f(vertexColorLocation, redValue, greenValue, blueValue, 1.0f);
 			glBindVertexArray(VAO); 
-			float timeValue = glfwGetTime();
-			ourShader.setFloat("xOffset", timeValue);
 			//渲染三角形
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 			processInput(window);

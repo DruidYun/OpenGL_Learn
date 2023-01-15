@@ -519,3 +519,38 @@ public:
 
 - 使用`out`关键字把顶点位置输出到片段着色器，并将片段的颜色设置为与顶点位置相等（来看看连顶点位置值都在三角形中被插值的结果）。做完这些后，尝试回答下面的问题：为什么在三角形的左下角是黑的?：
 
+```glsl
+//顶点
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+
+// out vec3 ourColor;
+out vec3 ourPosition;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0); 
+    // ourColor = aColor;
+    ourPosition = aPos;
+}
+```
+
+```glsl
+//片元
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aColor;
+
+// out vec3 ourColor;
+out vec3 ourPosition;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0); 
+    // ourColor = aColor;
+    ourPosition = aPos;
+}
+```
+
+回答：因为左下角的顶点的坐标为`(-0.5f,-0.5f,0.0f)`,在作为颜色显示的时候负值被固定为0，而(0,0,0,1)就是黑色，而这一直发生那个顶点插值到其他顶点的过程，所以导致了左下角为黑边。
