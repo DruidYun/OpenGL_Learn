@@ -12,21 +12,23 @@ class Shader
 {
 public:
     unsigned int ID;
-    // constructor generates the shader on the fly
+    // 构造函数动态生成着色器
     // ------------------------------------------------------------------------
     Shader(const char* vertexPath, const char* fragmentPath)
     {
         // 1. retrieve the vertex/fragment source code from filePath
+        // 1. 从文件路径接受顶点/片元着色器源代码
         std::string vertexCode;
         std::string fragmentCode;
         std::ifstream vShaderFile;
         std::ifstream fShaderFile;
         // ensure ifstream objects can throw exceptions:
+        // 确保输入文件流对象可以抛出异常
         vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try
         {
-            // open files
+            // 打开文件
             vShaderFile.open(vertexPath);
             fShaderFile.open(fragmentPath);
             std::stringstream vShaderStream, fShaderStream;
@@ -46,25 +48,26 @@ public:
         }
         const char* vShaderCode = vertexCode.c_str();
         const char* fShaderCode = fragmentCode.c_str();
-        // 2. compile shaders
+        // 2. 编译着色器
         unsigned int vertex, fragment;
-        // vertex shader
+        // vertex shader 顶点
         vertex = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertex, 1, &vShaderCode, NULL);
         glCompileShader(vertex);
         checkCompileErrors(vertex, "VERTEX");
-        // fragment Shader
+        // fragment Shader 片元
         fragment = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragment, 1, &fShaderCode, NULL);
         glCompileShader(fragment);
         checkCompileErrors(fragment, "FRAGMENT");
-        // shader Program
+        // shader Program 
         ID = glCreateProgram();
-        glAttachShader(ID, vertex);
+        glAttachShader(ID, vertex); //附加vertex对象给ID
         glAttachShader(ID, fragment);
         glLinkProgram(ID);
         checkCompileErrors(ID, "PROGRAM");
         // delete the shaders as they're linked into our program now and no longer necessary
+        // 因为它们已经链接程序，不再需要，然后就删除这些着色器
         glDeleteShader(vertex);
         glDeleteShader(fragment);
     }
@@ -74,7 +77,7 @@ public:
     {
         glUseProgram(ID);
     }
-    // utility uniform functions
+    // 一些有用Uniform函数
     // ------------------------------------------------------------------------
     void setBool(const std::string& name, bool value) const
     {

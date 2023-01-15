@@ -375,3 +375,147 @@ const char *fragmentShaderSource =
 ```
 
 ![image-20230111122955026](readme.assets/image-20230111122955026.png)
+
+## 编写自己的着色器类
+
+把着色器类全部放在在头文件里，主要是为了学习用途，当然也方便移植。添加必要的include，并定义类结构：
+
+```c++
+#ifndef SHADER_H
+#define SHADER_H
+
+#include <glad/glad.h>; // 包含glad来获取所有的必须OpenGL头文件
+
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
+
+class Shader
+{
+public:
+    // 程序ID
+    unsigned int ID;
+
+    // 构造器读取并构建着色器
+    Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
+    // 使用/激活程序
+    void use();
+    // uniform工具函数
+    void setBool(const std::string &name, bool value) const;  
+    void setInt(const std::string &name, int value) const;   
+    void setFloat(const std::string &name, float value) const;
+};
+
+#endif
+```
+
+下一步，我们需要编译和链接着色器。
+
+```g
+        // 2. 编译着色器
+        unsigned int vertex, fragment;
+        // vertex shader 顶点
+        vertex = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vertex, 1, &vShaderCode, NULL);
+        glCompileShader(vertex);
+        checkCompileErrors(vertex, "VERTEX");
+        // fragment Shader 片元
+        fragment = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fragment, 1, &fShaderCode, NULL);
+        glCompileShader(fragment);
+        checkCompileErrors(fragment, "FRAGMENT");
+        // shader Program 
+        ID = glCreateProgram();
+        glAttachShader(ID, vertex); //附加vertex对象给ID
+        glAttachShader(ID, fragment);
+        glLinkProgram(ID);
+        checkCompileErrors(ID, "PROGRAM");
+        // delete the shaders as they're linked into our program now and no longer necessary
+        // 因为它们已经链接程序，不再需要，然后就删除这些着色器
+        glDeleteShader(vertex);
+        glDeleteShader(fragment);
+```
+
+设置use函数
+
+```c++
+    void use()
+    {
+        glUseProgram(ID);
+    }
+```
+
+```c++
+    // 一些有用Uniform函数
+    // ------------------------------------------------------------------------
+    void setBool(const std::string& name, bool value) const
+    {
+        glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+    }
+    // ------------------------------------------------------------------------
+    void setInt(const std::string& name, int value) const
+    {
+        glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+    }
+    // ------------------------------------------------------------------------
+    void setFloat(const std::string& name, float value) const
+    {
+        glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+    }
+```
+
+最后创建着色器对象，再使用
+
+### 着色器练习
+
+- 修改顶点着色器让三角形上下颠倒：
+
+  ```glsl
+  #version 330 core
+  layout (location = 0) in vec3 aPos;
+  layout (location = 1) in vec3 aColor;
+  
+  out vec3 ourColor;
+  //修改顶点着色器，让aPos.y变成负值
+  void main()
+  {
+      gl_Position = vec4(aPos.x,- aPos.y,aPos.z, 1.0);
+      ourColor = aColor;
+  }
+  ```
+
+  
+
+- 使用uniform定义一个水平偏移量，在顶点着色器中使用这个偏移量把三角形移动到屏幕右侧：
+
+  - 在C++代码设置
+
+  ```c++
+  float offset = 0.5f;
+  ourShader.setFloat("xOffset", offset);
+  ```
+
+  - ​	在顶点着色器
+
+    ```glsl
+    #version 330 core
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec3 aColor;
+    
+    out vec3 ourColor;
+    
+    uniform float xOffset;
+    
+    void main()
+    {
+        gl_Position = vec4(aPos.x + xOffset, aPos.y, aPos.z, 1.0); // add the xOffset to the x position of the vertex position
+        ourColor = aColor;
+    }
+    ```
+
+    
+
+- 使用`out`关键字把顶点位置输出到片段着色器，并将片段的颜色设置为与顶点位置相等（来看看连顶点位置值都在三角形中被插值的结果）。做完这些后，尝试回答下面的问题：为什么在三角形的左下角是黑的?：
+
