@@ -103,7 +103,7 @@ int main()
 	glGenTextures(1, &texture2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -124,6 +124,7 @@ int main()
 	ourShader.use(); // 不要忘记在设置uniform变量之前激活着色器程序！
 	glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0); // 手动设置
 	ourShader.setInt("texture2", 1); // 或者使用着色器类设置
+	float parm = 0.2f;
 	//渲染循环
 	while (!glfwWindowShouldClose(window))
 	{
@@ -135,6 +136,15 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		ourShader.use();
+		//if (parm >= 1.0f)
+		//	parm = 1.0f;
+		//if (parm <= 0.0f)
+		//	parm = 0.0f;
+		ourShader.setFloat("parm", parm);
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+			parm += 0.01;
+		else if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+			parm -= 0.01;
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);//请求窗口系统将参数window关联的后缓存画面呈现给用户
