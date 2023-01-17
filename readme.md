@@ -735,9 +735,9 @@ void main()
 
   - 结果(第一种为GL_LINEAR，第二个为GL_NEAREST)
 
-  ![GL_LINEAR](readme.assets/GL_LINEAR.png)
+  ![](readme.assets/GL_LINEAR-16739268703381.png)
 
-  ![GL_NEAREST](readme.assets/GL_NEAREST.png)
+  ![](readme.assets/GL_NEAREST-16739268761223.png)
 
 - 使用一个uniform变量作为mix函数的第三个参数来改变两个纹理可见度，使用上和下键来改变箱子或笑脸的可见度：[参考解答](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.5.textures_exercise4/textures_exercise4.cpp)。
 
