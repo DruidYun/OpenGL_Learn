@@ -19,7 +19,7 @@ glfwWindowHint(target, Hint);
 
 把某一种target设置成hint
 
-
+<!--more-->
 
 片段：包含渲染单个像素所需的所有数据。
 
@@ -780,7 +780,7 @@ else if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 parm -= 0.01;
 ```
 
-![mix的最后参数 00_00_02-](readme.assets/mix的最后参数 00_00_02-.gif)
+![mix的最后参数](readme.assets/mix的最后参数.gif)
 
 ## 变换
 
@@ -995,7 +995,7 @@ trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
 trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 ```
 
-![旋转 00_00_00-00_00_30](readme.assets/旋转 00_00_00-00_00_30.gif)
+![旋转](readme.assets/旋转.gif)
 
 ### 练习
 
@@ -1032,4 +1032,4 @@ glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 ```
 
-![旋转和缩放 00_00_01-00_00_06](readme.assets/旋转和缩放 00_00_01-00_00_06.gif)
+![旋转和缩放](readme.assets/旋转和缩放.gif)
