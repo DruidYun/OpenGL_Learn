@@ -23,8 +23,8 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 //colors
 glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-glm::vec3 toyColor(0.0f, 0.5f, 0.5f);
-glm::vec3 result = lightColor * toyColor; // = (1.0f, 0.5f, 0.31f);
+glm::vec3 objectColor(0.0f, 0.5f, 0.5f);
+glm::vec3 result = lightColor * objectColor; // = (1.0f, 0.5f, 0.31f);
 //lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
@@ -145,7 +145,7 @@ int main()
 		glClearColor(0.1, 0.1f, 0.1f, 1.0f);//◊¥Ã¨…Ë÷√
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		lightingShader.use();
-		lightingShader.setVec3("objectColor", toyColor);
+		lightingShader.setVec3("objectColor", objectColor);
 		lightingShader.setVec3("lightColor", lightColor);
 
 		glm::mat4 view = camera.GetViewMatrix();
