@@ -47,6 +47,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_2_3Materials", "samp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_2_4LightingMaps", "sample_2_4LightingMaps\sample_2_4LightingMaps.vcxproj", "{F3BD8D5A-1D2E-4D0F-A22D-7B2489B59CBF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_2_4LightingMaps-Practice", "sample_2_4LightingMaps-Practice\sample_2_4LightingMaps-Practice.vcxproj", "{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -231,6 +233,14 @@ Global
 		{F3BD8D5A-1D2E-4D0F-A22D-7B2489B59CBF}.Release|x64.Build.0 = Release|x64
 		{F3BD8D5A-1D2E-4D0F-A22D-7B2489B59CBF}.Release|x86.ActiveCfg = Release|Win32
 		{F3BD8D5A-1D2E-4D0F-A22D-7B2489B59CBF}.Release|x86.Build.0 = Release|Win32
+		{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}.Debug|x64.ActiveCfg = Debug|x64
+		{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}.Debug|x64.Build.0 = Debug|x64
+		{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}.Debug|x86.ActiveCfg = Debug|Win32
+		{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}.Debug|x86.Build.0 = Debug|Win32
+		{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}.Release|x64.ActiveCfg = Release|x64
+		{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}.Release|x64.Build.0 = Release|x64
+		{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}.Release|x86.ActiveCfg = Release|Win32
+		{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
