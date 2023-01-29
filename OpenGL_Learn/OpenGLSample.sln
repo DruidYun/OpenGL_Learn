@@ -49,7 +49,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_2_4LightingMaps", "s
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_2_4LightingMaps-Practice", "sample_2_4LightingMaps-Practice\sample_2_4LightingMaps-Practice.vcxproj", "{EC9775EA-674B-4865-8A90-AB1AAD4C4F9F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_2_5LightCasters", "sample_2_5LightCasters\sample_2_5LightCasters.vcxproj", "{33A6AD7C-9DAE-4852-8047-9473957D1634}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_2_5LightCasters-1", "sample_2_5LightCasters-1\sample_2_5LightCasters-1.vcxproj", "{33A6AD7C-9DAE-4852-8047-9473957D1634}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
