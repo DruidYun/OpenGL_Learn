@@ -62,16 +62,16 @@ int main()
 		return -1;
 	}
 	glm::vec3 pointLightPositions[] = {
-	glm::vec3(0.7f,  0.2f,  2.0f),
-	glm::vec3(2.3f, -3.3f, -4.0f),
-	glm::vec3(-4.0f,  2.0f, -12.0f),
-	glm::vec3(0.0f,  0.0f, -3.0f)
+	glm::vec3(1.0, -0.1f, 1.0f),
+	glm::vec3(1.0f, -0.1f, 1.0f),
+	glm::vec3(-1.0f, -1.4f, 0.1f),
+	glm::vec3(-1.0f, -1.4f, 0.1f)
 	};
 	glm::vec3 pointLightColors[] = {
-	glm::vec3(0.1f, 0.1f, 0.1f),
-	glm::vec3(0.1f, 0.1f, 0.1f),
-	glm::vec3(0.1f, 0.1f, 0.1f),
-	glm::vec3(0.4f, 0.1f, 0.1f)
+	glm::vec3(1.0f, 1.0f, 1.0f),
+	glm::vec3(1.0f, 1.0f, 1.0f),
+	glm::vec3(1.0f, 0.0f, 0.0f),
+	glm::vec3(1.0f, 0.0f, 0.0f)
 	};
 	glEnable(GL_DEPTH_TEST);
 	stbi_set_flip_vertically_on_load(true);
@@ -96,9 +96,9 @@ int main()
 		//光照参数
 		// Directional light
 		glUniform3f(glGetUniformLocation(ourShader.ID, "dirLight.direction"), -0.2f, -1.0f, -0.3f);
-		glUniform3f(glGetUniformLocation(ourShader.ID, "dirLight.ambient"), 0.1f, 0.0f, 0.0f);
-		glUniform3f(glGetUniformLocation(ourShader.ID, "dirLight.diffuse"), 0.2f, 0.2f, 0.2);
-		glUniform3f(glGetUniformLocation(ourShader.ID, "dirLight.specular"), 0.5f, 0.5f, 0.5f);
+		glUniform3f(glGetUniformLocation(ourShader.ID, "dirLight.ambient"), 0.1f, 0.1f, 0.1f);
+		glUniform3f(glGetUniformLocation(ourShader.ID, "dirLight.diffuse"), 0.2f, 0.0f, 0.0);
+		glUniform3f(glGetUniformLocation(ourShader.ID, "dirLight.specular"), 0.9f, 0.5f, 0.5f);
 		// Point light 1
 		glUniform3f(glGetUniformLocation(ourShader.ID, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
 		glUniform3f(glGetUniformLocation(ourShader.ID, "pointLights[0].ambient"), pointLightColors[0].x * 0.1, pointLightColors[0].y * 0.1, pointLightColors[0].z * 0.1);
@@ -135,44 +135,14 @@ int main()
 		glUniform3f(glGetUniformLocation(ourShader.ID, "spotLight.position"), camera.Position.x, camera.Position.y, camera.Position.z);
 		glUniform3f(glGetUniformLocation(ourShader.ID, "spotLight.direction"), camera.Front.x, camera.Front.y, camera.Front.z);
 		glUniform3f(glGetUniformLocation(ourShader.ID, "spotLight.ambient"), 0.0f, 0.0f, 0.0f);
-		glUniform3f(glGetUniformLocation(ourShader.ID, "spotLight.diffuse"), 1.0f, 1.0f, 1.0f);
-		glUniform3f(glGetUniformLocation(ourShader.ID, "spotLight.specular"), 1.0f, 1.0f, 1.0f);
+		glUniform3f(glGetUniformLocation(ourShader.ID, "spotLight.diffuse"), 0.0f, 0.0f, 0.0f);
+		glUniform3f(glGetUniformLocation(ourShader.ID, "spotLight.specular"), 0.0f, 0.0f, 0.0f);
 		glUniform1f(glGetUniformLocation(ourShader.ID, "spotLight.constant"), 1.0f);
 		glUniform1f(glGetUniformLocation(ourShader.ID, "spotLight.linear"), 0.09);
 		glUniform1f(glGetUniformLocation(ourShader.ID, "spotLight.quadratic"), 0.032);
 		glUniform1f(glGetUniformLocation(ourShader.ID, "spotLight.cutOff"), glm::cos(glm::radians(10.0f)));
 		glUniform1f(glGetUniformLocation(ourShader.ID, "spotLight.outerCutOff"), glm::cos(glm::radians(15.0f)));
-		/*
-		//直射光
-		ourShader.setVec3("dirLight.ambient", 0.2f, 0.2f, 0.2f);
-		ourShader.setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
-		ourShader.setVec3("dirLight.specular", 1.0f, 1.0f, 1.0f);
-		ourShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-		//点光源
-		/*
-		for (unsigned int i = 0; i < 4; i++)
-		{
-			std::string str = "pointLights[";
-			std::string pointLightIdx = std::to_string(i);
-			ourShader.setVec3(str+pointLightIdx+"].position", pointLightPositions[i]);
-			ourShader.setVec3(str + pointLightIdx + "].ambient", 0.05f, 0.05f, 0.05f);
-			ourShader.setVec3(str + pointLightIdx + "].diffuse", 0.8f, 0.8f, 0.8f);
-			ourShader.setVec3(str + pointLightIdx + "].specular", 1.0f, 1.0f, 1.0f);
-			ourShader.setFloat(str + pointLightIdx + "].constant", 1.0f);
-			ourShader.setFloat(str + pointLightIdx + "].linear", 0.09f);
-			ourShader.setFloat(str + pointLightIdx + "].quadratic", 0.032f);
-		} 
 		
-		//聚光灯 手电筒
-		ourShader.setVec3("spotLight.ambient", 0.2f, 0.2f, 0.2f);
-		ourShader.setVec3("spotLight.diffuse", 0.5f, 0.5f, 0.5f);
-		ourShader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-		ourShader.setVec3("spotLight.position", camera.Position);
-		ourShader.setVec3("spotLight.direction", camera.Front);
-		ourShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-		ourShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(17.5f)));
-		*/
-
 		// view / projection transformations
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetViewMatrix();
